@@ -372,7 +372,6 @@ const Sidebar = ({ isOpen: propIsOpen, toggleSidebar: propToggleSidebar }) => {
   const toggleBtnRef = useRef(null);
   const prevAuthState = useRef(isAuthenticated);
 
-  // Use external props if provided, otherwise use internal state
   const isOpen = propIsOpen !== undefined ? propIsOpen : internalIsOpen;
   const toggleSidebar = propToggleSidebar !== undefined ? propToggleSidebar : () => setInternalIsOpen(!internalIsOpen);
 
@@ -381,7 +380,7 @@ const Sidebar = ({ isOpen: propIsOpen, toggleSidebar: propToggleSidebar }) => {
   }, []);
   
 
-  // Reset login flags when user logs out
+
   useEffect(() => {
     if (prevAuthState.current === true && isAuthenticated === false) {
       console.log("Logout detected - resetting first login flags");
@@ -396,7 +395,6 @@ const Sidebar = ({ isOpen: propIsOpen, toggleSidebar: propToggleSidebar }) => {
 }, [isOpen]);
 
 
-  // Check for first login or returning user
   useEffect(() => {
     if (typeof window !== "undefined" && isAuthenticated && !hasCheckedLogin) {
       const hasLoggedInBefore = localStorage.getItem("hasLoggedIn");
@@ -415,7 +413,6 @@ const Sidebar = ({ isOpen: propIsOpen, toggleSidebar: propToggleSidebar }) => {
     }
   }, [isAuthenticated, hasCheckedLogin]);
 
-  // Save sidebar state when it changes
   useEffect(() => {
     if (isAuthenticated && typeof window !== "undefined" && hasCheckedLogin) {
       localStorage.setItem("sidebarOpen", isOpen.toString());
@@ -440,6 +437,11 @@ const Sidebar = ({ isOpen: propIsOpen, toggleSidebar: propToggleSidebar }) => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isOpen, hasCheckedLogin, toggleSidebar]);
+  useEffect(() => {
+    console.log('Toggle button ref:', toggleBtnRef.current);
+    console.log('Sidebar ref:', sidebarRef.current);
+  }, [toggleBtnRef, sidebarRef]);
+
 
   if (!isAuthenticated) {
     return null;
@@ -448,19 +450,71 @@ const Sidebar = ({ isOpen: propIsOpen, toggleSidebar: propToggleSidebar }) => {
   const isDark = mounted && (theme === "dark");
 
   const placementsData = [
-    { id: 1, name: "Malathi", company: "Wipro", role: "AIML Engineer", date: "05/2025", batch: "2025" },
-    { id: 2, name: "Deepa", company: "Walmart", role: "ML Engineer", date: "01/2025", batch: "2025" },
-    { id: 3, name: "Nimmy", company: "Alo Yoga", role: "Frontend Developer", date: "01/2025", batch: "2025" },
-    { id: 4, name: "Ayesha", company: "Franklin Templeton", role: "Frontend React Developer", date: "01/2025", batch: "2025" }
+       {
+      id: 1,
+      name: "Malathi",
+      company: "Wipro",
+      role: "AIML Engineer",
+      date: "05/2025",
+      batch: "2025",
+    },
+    {
+      id: 2,
+      name: "Deepa",
+      company: "Walmart",
+      role: "ML Engineer",
+      date: "01/2025",
+      batch: "2025",
+    },
+    {
+      id: 3,
+      name: "Nimmy",
+      company: "Alo Yoga",
+      role: "Frontend Developer",
+      date: "01/2025",
+      batch: "2025",
+    },
+    {
+      id: 4,
+      name: "Ayesha",
+      company: "Franklin Templeton",
+      role: "Frontend React Developer",
+      date: "01/2025",
+      batch: "2025",
+    }
+   
   ];
 
   const announcementsData = [
-    { id: 1, title: "Today's Class", description: "Advanced React Patterns at 2:00 PM", date: "Today", important: true },
-    { id: 2, title: "Mock Interview", description: "Prepare for technical round with FAANG companies", date: "Tomorrow, 11:00 AM", important: false },
-    { id: 3, title: "Session", description: "Industry expert session on Cloud Architecture", date: "Feb 28, 3:00 PM", important: true },
-    { id: 4, title: "Assignment Deadline", description: "Submit your project by midnight", date: "Feb 29", important: true }
+   {
+      id: 1,
+      title: "Today's Class",
+      description: "Advanced React Patterns at 2:00 PM",
+      date: "Today",
+      important: true,
+    },
+    {
+      id: 2,
+      title: "Mock Interview",
+      description: "Prepare for technical round with FAANG companies",
+      date: "Tomorrow, 11:00 AM",
+      important: false,
+    },
+    {
+      id: 3,
+      title: "Session",
+      description: "Industry expert session on Cloud Architecture",
+      date: "Feb 28, 3:00 PM",
+      important: true,
+    },
+    {
+      id: 4,
+      title: "Assignment Deadline",
+      description: "Submit your project by midnight",
+      date: "Feb 29",
+      important: true,
+    }
   ];
-
   return (
     <>
       <button
